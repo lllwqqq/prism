@@ -1,14 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <!-- Rounded rectangle background in amber -->
-  <rect x="4" y="4" width="120" height="120" rx="24" ry="24" fill="#c8713a"/>
-  <!-- White "M" letter centered -->
-  <text
-    x="64"
-    y="90"
-    font-family="Georgia, serif"
-    font-size="80"
-    font-weight="bold"
-    fill="white"
-    text-anchor="middle"
-  >M</text>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c6cf0"/>
+      <stop offset="100%" stop-color="#c06cf0"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect x="4" y="4" width="120" height="120" rx="24" ry="24" fill="url(#bg)"/>
+  <!-- Prism triangle -->
+  <polygon points="64,26 98,94 30,94" fill="none" stroke="white" stroke-width="5" stroke-linejoin="round" opacity="0.9"/>
+  <!-- Light beam entering prism -->
+  <line x1="24" y1="58" x2="48" y2="58" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <!-- Refracted light beams exiting prism -->
+  <line x1="80" y1="54" x2="106" y2="42" stroke="#6cf0b4" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  <line x1="80" y1="60" x2="106" y2="58" stroke="#6cb4f0" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  <line x1="80" y1="66" x2="106" y2="74" stroke="#f0c86c" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
 </svg>
