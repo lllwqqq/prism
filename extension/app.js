@@ -513,6 +513,27 @@ function getDateDisplay() {
   });
 }
 
+/**
+ * getFooterTime() — "3:42 PM"
+ */
+function getFooterTime() {
+  return new Date().toLocaleTimeString('en-US', {
+    hour:   'numeric',
+    minute: '2-digit',
+  });
+}
+
+/**
+ * updateFooterClock()
+ *
+ * Updates the footer time display. Called once on render
+ * and then every 30 seconds to keep it current.
+ */
+function updateFooterClock() {
+  const el = document.getElementById('footerTime');
+  if (el) el.textContent = getFooterTime();
+}
+
 
 /* ----------------------------------------------------------------
    DOMAIN & TITLE CLEANUP HELPERS
@@ -1025,6 +1046,7 @@ async function renderStaticDashboard() {
   const dateEl     = document.getElementById('dateDisplay');
   if (greetingEl) greetingEl.textContent = getGreeting();
   if (dateEl)     dateEl.textContent     = getDateDisplay();
+  updateFooterClock();
 
   // --- Fetch tabs ---
   await fetchOpenTabs();
@@ -1520,3 +1542,6 @@ chrome.tabs.onAttached.addListener(() => scheduleRefresh());
    INITIALIZE
    ---------------------------------------------------------------- */
 renderDashboard();
+
+// Update the footer clock every 30 seconds
+setInterval(updateFooterClock, 30000);

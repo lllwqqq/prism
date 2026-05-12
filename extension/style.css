@@ -117,16 +117,17 @@ header {
 }
 
 .header-left h1 {
-  font-family: 'Newsreader', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 300;
-  font-size: 30px;
-  letter-spacing: -0.5px;
+  font-size: 34px;
+  letter-spacing: -1px;
   color: var(--ink);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .header-left .date {
-  font-size: 13px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
   color: var(--muted);
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -266,12 +267,14 @@ header {
 }
 
 .section-header h2 {
-  font-family: 'Newsreader', serif;
-  font-weight: 400;
-  font-size: 18px;
-  font-style: italic;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  font-style: normal;
   color: var(--muted);
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
 .section-line {
@@ -374,10 +377,11 @@ header {
 }
 
 .mission-name {
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   font-size: 15px;
   color: var(--ink);
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
 }
 
 .mission-tag {
@@ -561,8 +565,8 @@ header {
 
 .mission-page-count {
   font-size: 20px;
-  font-family: 'Newsreader', serif;
-  font-weight: 300;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
   color: var(--ink);
   line-height: 1;
 }
@@ -720,9 +724,9 @@ footer {
 }
 
 .stat-num {
-  font-family: 'Newsreader', serif;
-  font-size: 28px;
-  font-weight: 300;
+  font-family: 'DM Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -739,20 +743,24 @@ footer {
   margin-top: 4px;
 }
 
-.last-refresh {
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.footer-brand {
   font-size: 11px;
-  color: var(--muted);
-}
-
-.last-refresh a {
-  color: var(--muted);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s;
-}
-
-.last-refresh a:hover {
-  color: var(--ink);
+  color: var(--muted-dim);
+  letter-spacing: 0.5px;
 }
 
 .refresh-btn {
@@ -856,10 +864,10 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .empty-title {
-  font-family: 'Newsreader', serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 20px;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   color: var(--ink);
   letter-spacing: -0.3px;
 }

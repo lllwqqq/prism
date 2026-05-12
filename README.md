@@ -2,87 +2,69 @@
 
 **Your tabs, refracted.**
 
-Prism is a Chrome extension that replaces your new tab page with a glassmorphism dashboard of everything you have open. Tabs are grouped by domain, with homepages (Gmail, X, LinkedIn, etc.) pulled into their own group. Close tabs with a satisfying swoosh + confetti.
+Prism replaces your Chrome new tab page with a glassmorphism dashboard that groups everything you have open by domain. Homepages (Gmail, X, LinkedIn, YouTube, GitHub) get their own card. Close tabs with a satisfying swoosh + confetti burst.
 
-No server. No account. No external API calls. Just a Chrome extension.
-
----
-
-## Install with a coding agent
-
-Send your coding agent (Claude Code, Codex, etc.) this repo and say **"install this"**.
-
-The agent will walk you through it. Takes about 1 minute.
+No server. No account. No data leaves your machine.
 
 ---
 
 ## Features
 
-- **See all your tabs at a glance** on a clean grid, grouped by domain
-- **Homepages group** pulls Gmail inbox, X home, YouTube, LinkedIn, GitHub homepages into one card
-- **Close tabs with style** with swoosh sound + confetti burst
-- **Duplicate detection** flags when you have the same page open twice, with one-click cleanup
-- **Click any tab to jump to it** across windows, no new tab opened
-- **Save for later** bookmark tabs to a checklist before closing them
-- **Auto-refresh** dashboard updates in real-time when tabs change
-- **Localhost grouping** shows port numbers next to each tab so you can tell your projects apart
-- **Expandable groups** show the first 8 tabs with a clickable "+N more"
-- **100% local** your data never leaves your machine
-- **Pure Chrome extension** no server, no Node.js, no npm, no setup beyond loading the extension
+| Feature | Description |
+|---------|-------------|
+| Domain grouping | All open tabs organized by domain on a clean grid |
+| Homepages card | Gmail inbox, X home, YouTube, LinkedIn, GitHub in one group |
+| Swoosh + confetti | Close tabs with animated sound and particle burst |
+| Duplicate detection | Same page open twice? Flagged and one-click cleanup |
+| Cross-window jump | Click any tab title to switch to it, even across windows |
+| Save for later | Bookmark tabs to a checklist before closing them |
+| Auto-refresh | Dashboard updates in real-time when tabs change |
+| Localhost ports | Port numbers shown next to each local dev tab |
+| Expandable cards | First 8 tabs shown, click "+N more" to expand |
+| 100% local | Your data never leaves your machine |
 
 ---
 
-## Manual Setup
+## Install
 
-**1. Clone the repo**
-
-```bash
-git clone https://github.com/zarazhangrui/tab-out.git
-```
-
-**2. Load the Chrome extension**
+### Quick setup
 
 1. Open Chrome and go to `chrome://extensions`
 2. Enable **Developer mode** (top-right toggle)
 3. Click **Load unpacked**
-4. Navigate to the `extension/` folder inside the cloned repo and select it
+4. Select the `extension/` folder from this project
+5. Open a new tab — you'll see Prism
 
-**3. Open a new tab**
-
-You'll see Prism.
+> Setup takes about 1 minute. No server, no Node.js, no npm.
 
 ---
 
 ## How it works
 
 ```
-You open a new tab
-  -> Prism shows your open tabs grouped by domain
-  -> Homepages (Gmail, X, etc.) get their own group at the top
-  -> Click any tab title to jump to it
-  -> Close groups you're done with (swoosh + confetti)
-  -> Save tabs for later before closing them
+New tab
+  → Prism shows all open tabs grouped by domain
+  → Homepages get their own group at the top
+  → Click any tab title to jump to it
+  → Close groups when you're done (swoosh + confetti)
+  → Save tabs for later before closing them
 ```
 
-Everything runs inside the Chrome extension. No external server, no API calls, no data sent anywhere. Saved tabs are stored in `chrome.storage.local`.
+Everything runs inside the Chrome extension. Saved tabs are stored in `chrome.storage.local`.
 
 ---
 
-## Tech stack
+## Tech
 
-| What | How |
-|------|-----|
+| Layer | Technology |
+|-------|-----------|
 | Extension | Chrome Manifest V3 |
 | Storage | chrome.storage.local |
-| Sound | Web Audio API (synthesized, no files) |
-| Animations | CSS transitions + JS confetti particles |
+| Sound | Web Audio API (synthesized) |
+| Animation | CSS transitions + JS confetti particles |
 
 ---
 
 ## License
 
-MIT
-
----
-
-Author: Lee
+MIT — Author: Lee
