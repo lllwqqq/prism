@@ -1505,8 +1505,10 @@ document.addEventListener('input', async (e) => {
    ---------------------------------------------------------------- */
 
 let refreshTimer = null;
+let suppressRefresh = false;
 
 function scheduleRefresh() {
+  if (suppressRefresh) return;
   if (refreshTimer) clearTimeout(refreshTimer);
   refreshTimer = setTimeout(() => {
     renderDashboard();
@@ -1535,7 +1537,13 @@ chrome.tabs.onAttached.addListener(() => scheduleRefresh());
 /* ----------------------------------------------------------------
    INITIALIZE
    ---------------------------------------------------------------- */
+
+// Suppress event-driven refreshes for 500ms after initial render
+// to avoid the double-render flicker when opening a new tab
+// (Chrome fires onCreated/onUpdated for this very page).
+suppressRefresh = true;
 renderDashboard();
+setTimeout(() => { suppressRefresh = false; }, 500);
 
 // Update the header clock every 30 seconds
 setInterval(updateHeaderClock, 30000);
