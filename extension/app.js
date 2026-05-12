@@ -1,5 +1,5 @@
 /* ================================================================
-   Tab Out — Dashboard App (Pure Extension Edition)
+   Prism — Dashboard App (Pure Extension Edition)
 
    This file is the brain of the dashboard. Now that the dashboard
    IS the extension page (not inside an iframe), it can call
@@ -30,7 +30,7 @@ let openTabs = [];
  * fetchOpenTabs()
  *
  * Reads all currently open browser tabs directly from Chrome.
- * Sets the extensionId flag so we can identify Tab Out's own pages.
+ * Sets the extensionId flag so we can identify Prism's own pages.
  */
 async function fetchOpenTabs() {
   try {
@@ -45,8 +45,8 @@ async function fetchOpenTabs() {
       title:    t.title,
       windowId: t.windowId,
       active:   t.active,
-      // Flag Tab Out's own pages so we can detect duplicate new tabs
-      isTabOut: t.url === newtabUrl || t.url === 'chrome://newtab/',
+      // Flag Prism's own pages so we can detect duplicate new tabs
+      isPrism: t.url === newtabUrl || t.url === 'chrome://newtab/',
     }));
   } catch {
     // chrome.tabs API unavailable (shouldn't happen in an extension page)
@@ -170,29 +170,29 @@ async function closeDuplicateTabs(urls, keepOne = true) {
 }
 
 /**
- * closeTabOutDupes()
+ * closePrismDupes()
  *
- * Closes all duplicate Tab Out new-tab pages except the current one.
+ * Closes all duplicate Prism new-tab pages except the current one.
  */
-async function closeTabOutDupes() {
+async function closePrismDupes() {
   const extensionId = chrome.runtime.id;
   const newtabUrl = `chrome-extension://${extensionId}/index.html`;
 
   const allTabs = await chrome.tabs.query({});
   const currentWindow = await chrome.windows.getCurrent();
-  const tabOutTabs = allTabs.filter(t =>
+  const prismTabs = allTabs.filter(t =>
     t.url === newtabUrl || t.url === 'chrome://newtab/'
   );
 
-  if (tabOutTabs.length <= 1) return;
+  if (prismTabs.length <= 1) return;
 
-  // Keep the active Tab Out tab in the CURRENT window — that's the one the
+  // Keep the active Prism tab in the CURRENT window — that's the one the
   // user is looking at right now. Falls back to any active one, then the first.
   const keep =
-    tabOutTabs.find(t => t.active && t.windowId === currentWindow.id) ||
-    tabOutTabs.find(t => t.active) ||
-    tabOutTabs[0];
-  const toClose = tabOutTabs.filter(t => t.id !== keep.id).map(t => t.id);
+    prismTabs.find(t => t.active && t.windowId === currentWindow.id) ||
+    prismTabs.find(t => t.active) ||
+    prismTabs[0];
+  const toClose = prismTabs.filter(t => t.id !== keep.id).map(t => t.id);
   if (toClose.length > 0) await chrome.tabs.remove(toClose);
   await fetchOpenTabs();
 }
@@ -346,14 +346,14 @@ function playCloseSound() {
  */
 function shootConfetti(x, y) {
   const colors = [
-    '#c8713a', // amber
-    '#e8a070', // amber light
-    '#5a7a62', // sage
-    '#8aaa92', // sage light
-    '#5a6b7a', // slate
-    '#8a9baa', // slate light
-    '#d4b896', // warm paper
-    '#b35a5a', // rose
+    '#7c6cf0', // indigo
+    '#a78bfa', // violet
+    '#c06cf0', // purple
+    '#6cb4f0', // sky
+    '#6cf0b4', // mint
+    '#f0c86c', // gold
+    '#f06c7c', // rose
+    '#f09c6c', // peach
   ];
 
   const particleCount = 17;
@@ -733,19 +733,19 @@ function getRealTabs() {
 }
 
 /**
- * checkTabOutDupes()
+ * checkPrismDupes()
  *
- * Counts how many Tab Out pages are open. If more than 1,
+ * Counts how many Prism pages are open. If more than 1,
  * shows a banner offering to close the extras.
  */
-function checkTabOutDupes() {
-  const tabOutTabs = openTabs.filter(t => t.isTabOut);
-  const banner  = document.getElementById('tabOutDupeBanner');
-  const countEl = document.getElementById('tabOutDupeCount');
+function checkPrismDupes() {
+  const prismTabs = openTabs.filter(t => t.isPrism);
+  const banner  = document.getElementById('prismDupeBanner');
+  const countEl = document.getElementById('prismDupeCount');
   if (!banner) return;
 
-  if (tabOutTabs.length > 1) {
-    if (countEl) countEl.textContent = tabOutTabs.length;
+  if (prismTabs.length > 1) {
+    if (countEl) countEl.textContent = prismTabs.length;
     banner.style.display = 'flex';
   } else {
     banner.style.display = 'none';
@@ -819,7 +819,7 @@ function renderDomainCard(group) {
   </span>`;
 
   const dupeBadge = hasDupes
-    ? `<span class="open-tabs-badge" style="color:var(--accent-amber);background:rgba(200,113,58,0.08);">
+    ? `<span class="open-tabs-badge" style="color:var(--accent-2);background:rgba(192,108,240,0.08);">
         ${totalExtras} duplicate${totalExtras !== 1 ? 's' : ''}
       </span>`
     : '';
@@ -952,7 +952,7 @@ async function renderDeferredColumn() {
     }
 
   } catch (err) {
-    console.warn('[tab-out] Could not load saved tabs:', err);
+    console.warn('[prism] Could not load saved tabs:', err);
     column.style.display = 'none';
   }
 }
@@ -1161,8 +1161,8 @@ async function renderStaticDashboard() {
   const statTabs = document.getElementById('statTabs');
   if (statTabs) statTabs.textContent = openTabs.length;
 
-  // --- Check for duplicate Tab Out tabs ---
-  checkTabOutDupes();
+  // --- Check for duplicate Prism tabs ---
+  checkPrismDupes();
 
   // --- Render "Saved for Later" column ---
   await renderDeferredColumn();
@@ -1188,17 +1188,17 @@ document.addEventListener('click', async (e) => {
 
   const action = actionEl.dataset.action;
 
-  // ---- Close duplicate Tab Out tabs ----
-  if (action === 'close-tabout-dupes') {
-    await closeTabOutDupes();
+  // ---- Close duplicate Prism tabs ----
+  if (action === 'close-prism-dupes') {
+    await closePrismDupes();
     playCloseSound();
-    const banner = document.getElementById('tabOutDupeBanner');
+    const banner = document.getElementById('prismDupeBanner');
     if (banner) {
       banner.style.transition = 'opacity 0.4s';
       banner.style.opacity = '0';
       setTimeout(() => { banner.style.display = 'none'; banner.style.opacity = '1'; }, 400);
     }
-    showToast('Closed extra Tab Out tabs');
+    showToast('Closed extra Prism tabs');
     return;
   }
 
@@ -1275,7 +1275,7 @@ document.addEventListener('click', async (e) => {
     try {
       await saveTabForLater({ url: tabUrl, title: tabTitle });
     } catch (err) {
-      console.error('[tab-out] Failed to save tab:', err);
+      console.error('[prism] Failed to save tab:', err);
       showToast('Failed to save tab');
       return;
     }
@@ -1471,9 +1471,49 @@ document.addEventListener('input', async (e) => {
     archiveList.innerHTML = results.map(item => renderArchiveItem(item)).join('')
       || '<div style="font-size:12px;color:var(--muted);padding:8px 0">No results</div>';
   } catch (err) {
-    console.warn('[tab-out] Archive search failed:', err);
+    console.warn('[prism] Archive search failed:', err);
   }
 });
+
+
+/* ----------------------------------------------------------------
+   AUTO-REFRESH — React to tab changes in real-time
+
+   Since this page IS the extension's new tab page, it has full
+   access to chrome.tabs events. We listen for tab creation,
+   removal, and URL changes, then debounced-re-render the dashboard.
+
+   The debounce ensures we don't re-render multiple times when
+   several tab events fire in quick succession (e.g. "Close all"
+   closing 10 tabs at once triggers 10 onRemoved events).
+   ---------------------------------------------------------------- */
+
+let refreshTimer = null;
+
+function scheduleRefresh() {
+  if (refreshTimer) clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => {
+    renderDashboard();
+    refreshTimer = null;
+  }, 300);
+}
+
+// A tab was opened → refresh
+chrome.tabs.onCreated.addListener(() => scheduleRefresh());
+
+// A tab was closed → refresh
+chrome.tabs.onRemoved.addListener(() => scheduleRefresh());
+
+// A tab's URL changed (navigation, redirect) → refresh
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  // Only react to URL or title changes, not every minor update
+  if (changeInfo.url || changeInfo.title || changeInfo.status === 'complete') {
+    scheduleRefresh();
+  }
+});
+
+// A tab was attached/detached from a window → refresh
+chrome.tabs.onAttached.addListener(() => scheduleRefresh());
 
 
 /* ----------------------------------------------------------------

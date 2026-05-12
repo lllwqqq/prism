@@ -1,43 +1,92 @@
 /* ============================================================
-   Tab Mission Control — Dashboard Styles
-   Extracted directly from mockup.html — do not modify unless
-   also updating the mockup. This is the approved design.
+   Prism — Glassmorphism + Minimal Gradient Edition
    ============================================================ */
 
 :root {
-  --ink: #1a1613;
-  --paper: #f8f5f0;
-  --warm-gray: #e8e2da;
-  --muted: #9a918a;
-  --accent-amber: #c8713a;
-  --accent-sage: #5a7a62;
-  --accent-slate: #5a6b7a;
-  --accent-rose: #b35a5a;
-  --status-active: #3d7a4a;
-  --status-cooling: #b8892e;
-  --status-abandoned: #b35a5a;
-  --card-bg: #fffdf9;
-  --shadow: rgba(26, 22, 19, 0.06);
+  /* ---- Background gradient ---- */
+  --bg-from: #0f0c29;
+  --bg-via:  #1a1a3e;
+  --bg-to:   #24243e;
+
+  /* ---- Glass surfaces ---- */
+  --glass-bg:       rgba(255, 255, 255, 0.06);
+  --glass-bg-hover: rgba(255, 255, 255, 0.10);
+  --glass-border:   rgba(255, 255, 255, 0.12);
+  --glass-blur:     20px;
+
+  /* ---- Text ---- */
+  --ink:         #f0eef6;
+  --paper:       #ffffff;
+  --muted:       rgba(255, 255, 255, 0.50);
+  --muted-dim:   rgba(255, 255, 255, 0.30);
+
+  /* ---- Accent: indigo → purple gradient ---- */
+  --accent-1: #7c6cf0;
+  --accent-2: #c06cf0;
+  --accent-3: #6cb4f0;
+  --accent-gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+
+  /* ---- Status ---- */
+  --status-active:   #6cf0b4;
+  --status-cooling:  #f0c86c;
+  --status-abandoned: #f06c7c;
+
+  /* ---- Surfaces ---- */
+  --card-bg:       var(--glass-bg);
+  --card-border:   var(--glass-border);
+  --shadow:        0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-hover:  0 12px 48px rgba(0, 0, 0, 0.35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--paper);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(160deg, var(--bg-from) 0%, var(--bg-via) 50%, var(--bg-to) 100%);
+  background-attachment: fixed;
   color: var(--ink);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Subtle paper texture */
-body::before {
+/* Subtle animated gradient orbs in the background */
+body::before,
+body::after {
   content: '';
   position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
+  filter: blur(80px);
+}
+
+body::before {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 108, 240, 0.15), transparent 70%);
+  top: -200px;
+  right: -100px;
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+
+body::after {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(192, 108, 240, 0.12), transparent 70%);
+  bottom: -150px;
+  left: -100px;
+  animation: orbFloat2 25s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-80px, 60px); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(60px, -80px); }
 }
 
 .container {
@@ -48,26 +97,29 @@ body::before {
   padding: 48px 32px 80px;
 }
 
-/* When the saved-for-later sidebar is open, expand the container
-   so the tab grid still has room for 2-3 columns */
+/* Expand container when sidebar is visible */
 .container:has(.dashboard-columns) {
   max-width: 1300px;
 }
 
-/* ---- Header ---- */
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+
 header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 48px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--warm-gray);
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header-left h1 {
   font-family: 'Newsreader', serif;
   font-weight: 300;
-  font-size: 28px;
+  font-size: 30px;
   letter-spacing: -0.5px;
   color: var(--ink);
   margin-bottom: 4px;
@@ -81,11 +133,17 @@ header {
   text-transform: uppercase;
 }
 
-/* ---- Tab cleanup banner ---- */
+
+/* ================================================================
+   TAB CLEANUP BANNER
+   ================================================================ */
+
 .tab-cleanup-banner {
-  background: linear-gradient(135deg, rgba(200, 113, 58, 0.04), rgba(200, 113, 58, 0.09));
-  border: 1px solid rgba(200, 113, 58, 0.18);
-  border-radius: 8px;
+  background: rgba(124, 108, 240, 0.08);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(124, 108, 240, 0.20);
+  border-radius: 12px;
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -103,7 +161,7 @@ header {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(200, 113, 58, 0.1);
+  background: rgba(124, 108, 240, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +171,7 @@ header {
 .tab-cleanup-icon svg {
   width: 18px;
   height: 18px;
-  color: var(--accent-amber);
+  color: var(--accent-1);
 }
 
 .tab-cleanup-text {
@@ -124,6 +182,10 @@ header {
 
 .tab-cleanup-text strong {
   font-weight: 600;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .tab-cleanup-btn {
@@ -131,9 +193,9 @@ header {
   font-size: 12px;
   font-weight: 600;
   padding: 8px 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
-  background: var(--accent-amber);
+  background: var(--accent-gradient);
   color: white;
   cursor: pointer;
   transition: all 0.2s;
@@ -145,11 +207,17 @@ header {
   transform: translateY(-1px);
 }
 
-/* ---- Nudge banner ---- */
+
+/* ================================================================
+   NUDGE BANNER
+   ================================================================ */
+
 .nudge-banner {
-  background: linear-gradient(135deg, rgba(179, 90, 90, 0.04), rgba(179, 90, 90, 0.08));
-  border: 1px solid rgba(179, 90, 90, 0.15);
-  border-radius: 8px;
+  background: rgba(240, 108, 124, 0.08);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(240, 108, 124, 0.18);
+  border-radius: 12px;
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -161,7 +229,7 @@ header {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(179, 90, 90, 0.1);
+  background: rgba(240, 108, 124, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +252,11 @@ header {
   font-weight: 600;
 }
 
-/* ---- Section Headers ---- */
+
+/* ================================================================
+   SECTION HEADERS
+   ================================================================ */
+
 .section-header {
   display: flex;
   align-items: center;
@@ -205,7 +277,7 @@ header {
 .section-line {
   flex: 1;
   height: 1px;
-  background: var(--warm-gray);
+  background: var(--glass-border);
 }
 
 .section-count {
@@ -216,30 +288,36 @@ header {
   white-space: nowrap;
 }
 
-/* ---- Mission Cards ---- */
+
+/* ================================================================
+   MISSION CARDS (Glass Cards)
+   ================================================================ */
+
 .missions {
-  columns: 280px;
-  column-gap: 12px;
+  columns: 300px;
+  column-gap: 16px;
   margin-bottom: 40px;
 }
 
 .mission-card {
-  background: var(--card-bg);
-  border: 1px solid var(--warm-gray);
-  border-radius: 8px;
-  padding: 16px 18px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, background 0.3s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  break-inside: avoid;       /* don't split a card across columns */
-  margin-bottom: 12px;       /* vertical spacing (replaces grid gap) */
+  break-inside: avoid;
+  margin-bottom: 16px;
 }
 
-/* Colored top border instead of side bar for grid cards */
+/* Gradient top border */
 .mission-card::before {
   content: '';
   position: absolute;
@@ -247,23 +325,25 @@ header {
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--warm-gray);
+  background: var(--glass-border);
+  border-radius: 16px 16px 0 0;
 }
 
-.mission-card.has-active-bar::before { background: var(--status-active); }
-.mission-card.has-amber-bar::before { background: var(--accent-amber); }
-.mission-card.has-neutral-bar::before { background: var(--warm-gray); }
+.mission-card.has-active-bar::before { background: linear-gradient(90deg, var(--status-active), var(--accent-3)); }
+.mission-card.has-amber-bar::before  { background: linear-gradient(90deg, var(--status-cooling), var(--accent-2)); }
+.mission-card.has-neutral-bar::before { background: var(--glass-border); }
 
 .mission-card:hover {
-  box-shadow: 0 4px 20px var(--shadow);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  background: var(--glass-bg-hover);
 }
 
-/* Closing animation — card scales down and fades out */
+/* Closing animation */
 .mission-card.closing {
   opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: scale(0.92);
+  transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
 }
 
@@ -271,7 +351,7 @@ header {
   display: none !important;
 }
 
-/* Old side status bar — hidden, replaced by top border via ::before */
+/* Old side status bar — hidden, replaced by top border */
 .status-bar {
   display: none;
 }
@@ -280,7 +360,7 @@ header {
   min-width: 0;
 }
 
-/* Hide the right-side meta (page count) — info is already in the badge */
+/* Hide the right-side meta */
 .mission-meta {
   display: none;
 }
@@ -289,7 +369,7 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 
@@ -306,35 +386,35 @@ header {
   letter-spacing: 1px;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 .mission-tag.active {
   color: var(--status-active);
-  background: rgba(61, 122, 74, 0.08);
+  background: rgba(108, 240, 180, 0.10);
 }
 
 .mission-tag.cooling {
   color: var(--status-cooling);
-  background: rgba(184, 137, 46, 0.08);
+  background: rgba(240, 200, 108, 0.10);
 }
 
 .mission-tag.abandoned {
   color: var(--status-abandoned);
-  background: rgba(179, 90, 90, 0.08);
+  background: rgba(240, 108, 124, 0.10);
 }
 
-/* Tab indicator badge — shows how many Chrome tabs are still open for this mission */
+/* Tab indicator badge */
 .open-tabs-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 10px;
   font-weight: 500;
-  color: var(--accent-amber);
-  background: rgba(200, 113, 58, 0.08);
+  color: var(--accent-1);
+  background: rgba(124, 108, 240, 0.10);
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 .open-tabs-badge svg {
@@ -355,15 +435,19 @@ header {
   gap: 0;
 }
 
-/* ---- Tab row — each tab is a full-width row with favicon, title, and actions ---- */
+
+/* ================================================================
+   TAB ROW (page-chip)
+   ================================================================ */
+
 .page-chip {
   font-size: 13px;
-  color: var(--ink);
+  color: rgba(255, 255, 255, 0.85);
   background: transparent;
   padding: 8px 4px;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   display: flex;
   align-items: center;
@@ -381,14 +465,13 @@ header {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
-/* Title text — wraps naturally, no truncation */
+/* Title text */
 .chip-text {
   flex: 1;
   min-width: 0;
-  /* Show up to 2 lines, then ellipsis */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -397,13 +480,16 @@ header {
 
 /* Duplicate badge */
 .chip-dupe-badge {
-  color: var(--accent-amber);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 600;
 }
 
 /* Duplicate border highlight */
 .chip-has-dupes {
-  border-color: rgba(200, 113, 58, 0.25);
+  border-color: rgba(124, 108, 240, 0.25);
 }
 
 /* Action buttons grouped on the right */
@@ -415,7 +501,7 @@ header {
   margin-left: auto;
 }
 
-/* ---- Chip action buttons (save + close) ---- */
+/* Chip action buttons (save + close) */
 .chip-action {
   display: inline-flex;
   align-items: center;
@@ -425,8 +511,8 @@ header {
   color: var(--muted);
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
-  opacity: 0.35;
+  border-radius: 6px;
+  opacity: 0.30;
   transition: opacity 0.15s, color 0.15s, background 0.15s;
   flex-shrink: 0;
 }
@@ -438,17 +524,17 @@ header {
 
 .chip-action:hover {
   opacity: 1;
-  background: rgba(154, 145, 138, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .chip-save:hover {
-  color: var(--accent-sage);
-  background: rgba(90, 122, 98, 0.08);
+  color: var(--status-active);
+  background: rgba(108, 240, 180, 0.08);
 }
 
 .chip-close:hover {
   color: var(--status-abandoned);
-  background: rgba(179, 90, 90, 0.08);
+  background: rgba(240, 108, 124, 0.08);
 }
 
 .page-chip.clickable {
@@ -457,7 +543,7 @@ header {
 }
 
 .page-chip.clickable:hover {
-  background: rgba(200, 113, 58, 0.04);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 /* "+N more" overflow chip */
@@ -466,8 +552,6 @@ header {
   color: var(--muted);
   padding: 6px 4px;
 }
-
-/* mission-meta hidden — see above */
 
 .mission-time {
   font-size: 12px;
@@ -490,32 +574,39 @@ header {
   letter-spacing: 1px;
 }
 
-/* ---- Actions row ---- */
+
+/* ================================================================
+   ACTION BUTTONS
+   ================================================================ */
+
 .actions {
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .action-btn {
   font-size: 11px;
   font-family: 'DM Sans', sans-serif;
   font-weight: 500;
-  padding: 5px 14px;
-  border-radius: 4px;
-  border: 1px solid var(--warm-gray);
-  background: var(--card-bg);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
   color: var(--muted);
   cursor: pointer;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .action-btn:hover {
-  border-color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.25);
   color: var(--ink);
+  background: var(--glass-bg-hover);
 }
 
 .action-btn svg {
@@ -524,9 +615,9 @@ header {
 }
 
 .action-btn.primary {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
+  background: var(--accent-gradient);
+  color: white;
+  border-color: transparent;
 }
 
 .action-btn.primary:hover {
@@ -534,25 +625,25 @@ header {
 }
 
 .action-btn.close-tabs {
-  border-color: rgba(200, 113, 58, 0.3);
-  color: var(--accent-amber);
-  background: rgba(200, 113, 58, 0.04);
+  border-color: rgba(124, 108, 240, 0.30);
+  color: var(--accent-1);
+  background: rgba(124, 108, 240, 0.06);
 }
 
 .action-btn.close-tabs:hover {
-  background: rgba(200, 113, 58, 0.1);
-  border-color: var(--accent-amber);
+  background: rgba(124, 108, 240, 0.12);
+  border-color: var(--accent-1);
 }
 
 .action-btn.save-tabs {
-  border-color: rgba(90, 122, 98, 0.3);
-  color: var(--accent-sage);
-  background: rgba(90, 122, 98, 0.04);
+  border-color: rgba(108, 240, 180, 0.30);
+  color: var(--status-active);
+  background: rgba(108, 240, 180, 0.06);
 }
 
 .action-btn.save-tabs:hover {
-  background: rgba(90, 122, 98, 0.1);
-  border-color: var(--accent-sage);
+  background: rgba(108, 240, 180, 0.12);
+  border-color: var(--status-active);
 }
 
 .action-btn.danger {
@@ -564,20 +655,27 @@ header {
   color: var(--status-abandoned);
 }
 
-/* ---- Toast notification ---- */
+
+/* ================================================================
+   TOAST NOTIFICATION
+   ================================================================ */
+
 .toast {
   position: fixed;
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%) translateY(80px);
-  background: var(--ink);
-  color: var(--paper);
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 500;
   padding: 12px 24px;
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
   z-index: 100;
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -598,11 +696,15 @@ header {
   color: var(--status-active);
 }
 
-/* ---- Footer ---- */
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+
 footer {
   margin-top: 48px;
   padding-top: 20px;
-  border-top: 1px solid var(--warm-gray);
+  border-top: 1px solid var(--glass-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -621,7 +723,10 @@ footer {
   font-family: 'Newsreader', serif;
   font-size: 28px;
   font-weight: 300;
-  color: var(--ink);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1;
   transition: all 0.3s;
 }
@@ -639,11 +744,22 @@ footer {
   color: var(--muted);
 }
 
+.last-refresh a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.last-refresh a:hover {
+  color: var(--ink);
+}
+
 .refresh-btn {
   font-family: 'DM Sans', sans-serif;
   font-size: 11px;
   font-weight: 500;
-  color: var(--accent-amber);
+  color: var(--accent-1);
   background: none;
   border: none;
   cursor: pointer;
@@ -651,10 +767,14 @@ footer {
   text-underline-offset: 2px;
 }
 
-/* ---- Animations ---- */
+
+/* ================================================================
+   ANIMATIONS
+   ================================================================ */
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 header { animation: fadeUp 0.5s ease both; }
@@ -680,66 +800,53 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 
 
 /* ================================================================
-   STATIC DEFAULT VIEW — new elements added for "AI on demand"
+   STATIC DEFAULT VIEW
    ================================================================ */
 
-/* ---- Neutral status bar (domain-grouped cards, no AI color) ---- */
 .status-bar.neutral {
-  background: var(--warm-gray);
+  background: var(--glass-border);
 }
 
-/* ---- "Domain" tag on static domain cards ---- */
 .mission-tag.neutral {
   color: var(--muted);
-  background: rgba(154, 145, 138, 0.1);
+  background: rgba(255, 255, 255, 0.06);
 }
+
 
 /* ================================================================
    MISSIONS EMPTY STATE
-   Shown when all mission cards have been closed.
-   A calm, satisfying "you did it" moment.
    ================================================================ */
 
 .missions-empty-state {
-  /* Takes the full width — spans all columns */
   column-span: all;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-
   padding: 56px 24px;
   text-align: center;
-
   animation: fadeUp 0.5s ease both;
 }
 
-/* CSS-drawn checkmark in a glowing circle */
 .empty-checkmark {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(90, 122, 98, 0.1);
-  border: 1.5px solid rgba(90, 122, 98, 0.3);
-
-  /* Soft sage glow */
-  box-shadow: 0 0 0 8px rgba(90, 122, 98, 0.05),
-              0 0 0 16px rgba(90, 122, 98, 0.03);
-
+  background: rgba(108, 240, 180, 0.10);
+  border: 1.5px solid rgba(108, 240, 180, 0.25);
+  box-shadow: 0 0 0 8px rgba(108, 240, 180, 0.04),
+              0 0 0 16px rgba(108, 240, 180, 0.02);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Pop in with a gentle scale animation */
   animation: checkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
 }
 
 .empty-checkmark svg {
   width: 26px;
   height: 26px;
-  color: var(--accent-sage);
+  color: var(--status-active);
   stroke-width: 2.5;
 }
 
@@ -767,29 +874,20 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 
 /* ================================================================
    UPDATE BANNER
-   Appears at the very top of the page when a new version is available.
-   Intentionally thin and unobtrusive — it's informational, not urgent.
-   The warm sage green palette feels calm and positive ("new thing!"),
-   contrasting with the amber/rose warning tones used elsewhere.
    ================================================================ */
 
 .update-banner {
-  /* Thin bar — sits above the header, below the container's top padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-
-  /* Sage green tint — matches accent-sage but very light */
-  background: linear-gradient(135deg, rgba(90, 122, 98, 0.05), rgba(90, 122, 98, 0.10));
-  border: 1px solid rgba(90, 122, 98, 0.22);
-  border-radius: 8px;
+  background: rgba(108, 240, 180, 0.06);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(108, 240, 180, 0.18);
+  border-radius: 12px;
   padding: 10px 16px;
-
-  /* Push the header down slightly */
   margin-bottom: 24px;
-
-  /* Slide in from above when it appears */
   animation: bannerSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -798,19 +896,18 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Left cluster: icon + text */
 .update-banner-left {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
-  min-width: 0; /* prevents text overflow from breaking layout */
+  min-width: 0;
 }
 
 .update-banner-icon {
   width: 16px;
   height: 16px;
-  color: var(--accent-sage);
+  color: var(--status-active);
   flex-shrink: 0;
   opacity: 0.85;
 }
@@ -823,7 +920,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   opacity: 0.85;
 }
 
-/* Right cluster: action button + dismiss X */
 .update-banner-right {
   display: flex;
   align-items: center;
@@ -831,15 +927,14 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   flex-shrink: 0;
 }
 
-/* "Update now" button — small, filled, sage green */
 .update-banner-btn {
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #fff;
-  background: var(--accent-sage);
+  background: linear-gradient(135deg, var(--status-active), var(--accent-3));
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 5px 12px;
   cursor: pointer;
   letter-spacing: 0.2px;
@@ -848,7 +943,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .update-banner-btn:hover {
-  background: #4a6952; /* slightly darker sage */
+  opacity: 0.85;
 }
 
 .update-banner-btn:disabled {
@@ -856,7 +951,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   cursor: not-allowed;
 }
 
-/* Dismiss X button — minimal, icon-only */
 .update-banner-dismiss {
   display: flex;
   align-items: center;
@@ -866,7 +960,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   border: none;
   background: transparent;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--muted);
   transition: background 0.15s, color 0.15s;
   padding: 0;
@@ -874,7 +968,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .update-banner-dismiss:hover {
-  background: rgba(26, 22, 19, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--ink);
 }
 
@@ -888,27 +982,32 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
    SAVED FOR LATER — Checklist Column + Archive
    ================================================================ */
 
-/* ---- Two-column layout ---- */
+/* Two-column layout */
 .dashboard-columns {
   display: flex;
   gap: 32px;
   align-items: flex-start;
 }
 
-/* Open tabs column keeps the grid layout */
 .dashboard-columns .active-section {
   flex: 1;
   min-width: 600px;
 }
 
-/* Saved for later column — fixed width on the right, scrolls independently */
+/* Saved for later column — glass panel */
 .deferred-column {
-  width: 280px;
+  width: 300px;
   flex-shrink: 0;
   position: sticky;
   top: 32px;
   max-height: calc(100vh - 64px);
   overflow-y: auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 20px;
 }
 
 /* On narrow screens, stack vertically */
@@ -922,13 +1021,13 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   }
 }
 
-/* ---- Checklist items ---- */
+/* Checklist items */
 .deferred-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   animation: fadeUp 0.3s ease both;
 }
 
@@ -942,25 +1041,25 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--warm-gray);
-  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.20);
+  border-radius: 6px;
   cursor: pointer;
   flex-shrink: 0;
   margin-top: 1px;
   transition: all 0.2s;
   position: relative;
+  background: transparent;
 }
 
 .deferred-checkbox:hover {
-  border-color: var(--accent-sage);
+  border-color: var(--accent-1);
 }
 
 .deferred-checkbox:checked {
-  background: var(--accent-sage);
-  border-color: var(--accent-sage);
+  background: var(--accent-gradient);
+  border-color: transparent;
 }
 
-/* Checkmark inside the checkbox */
 .deferred-checkbox:checked::after {
   content: '';
   position: absolute;
@@ -973,7 +1072,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   transform: rotate(45deg);
 }
 
-/* Item content (title, domain, time) */
+/* Item content */
 .deferred-info {
   flex: 1;
   min-width: 0;
@@ -991,21 +1090,21 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .deferred-title:hover {
-  color: var(--accent-amber);
+  color: var(--accent-1);
 }
 
 .deferred-meta {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--muted-dim);
   margin-top: 2px;
   display: flex;
   gap: 8px;
 }
 
-/* Checked-off item — strikethrough + faded */
+/* Checked-off item */
 .deferred-item.checked .deferred-title {
   text-decoration: line-through;
-  color: var(--muted);
+  color: var(--muted-dim);
 }
 
 .deferred-item.checked .deferred-meta {
@@ -1019,7 +1118,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   color: var(--muted);
   cursor: pointer;
   padding: 2px;
-  opacity: 0.3;
+  opacity: 0.30;
   transition: opacity 0.15s, color 0.15s;
   flex-shrink: 0;
   margin-top: 1px;
@@ -1035,14 +1134,14 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   color: var(--status-abandoned);
 }
 
-/* Slide-out animation for items being removed */
+/* Slide-out animation */
 .deferred-item.removing {
   opacity: 0;
   transform: translateX(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* ---- Empty state ---- */
+/* Empty state */
 .deferred-empty {
   font-size: 13px;
   color: var(--muted);
@@ -1051,11 +1150,11 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   text-align: center;
 }
 
-/* ---- Archive section ---- */
+/* Archive section */
 .deferred-archive {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--warm-gray);
+  border-top: 1px solid var(--glass-border);
 }
 
 .archive-toggle {
@@ -1091,8 +1190,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 
 .archive-count {
   font-size: 11px;
-  color: var(--muted);
-  opacity: 0.7;
+  color: var(--muted-dim);
 }
 
 .archive-body {
@@ -1104,9 +1202,9 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   font-size: 12px;
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid var(--warm-gray);
-  border-radius: 6px;
-  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
   color: var(--ink);
   outline: none;
   transition: border-color 0.2s;
@@ -1114,20 +1212,20 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .archive-search:focus {
-  border-color: var(--accent-amber);
+  border-color: var(--accent-1);
 }
 
 .archive-search::placeholder {
-  color: var(--muted);
+  color: var(--muted-dim);
 }
 
-/* Archive items are simpler — just title + domain + date */
+/* Archive items */
 .archive-item {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .archive-item:last-child {
@@ -1152,7 +1250,33 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 
 .archive-item-date {
   font-size: 10px;
-  color: var(--muted);
-  opacity: 0.6;
+  color: var(--muted-dim);
   flex-shrink: 0;
 }
+
+
+/* ================================================================
+   SCROLLBAR — Subtle for the glass aesthetic
+   ================================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+
+/* ================================================================
+   CONFETTI — Glassmorphism particles
+   ================================================================ */

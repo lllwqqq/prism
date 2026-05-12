@@ -1,7 +1,7 @@
 /**
  * background.js — Service Worker for Badge Updates
  *
- * Chrome's "always-on" background script for Tab Out.
+ * Chrome's "always-on" background script for Prism.
  * Its only job: keep the toolbar badge showing the current open tab count.
  *
  * Since we no longer have a server, we query chrome.tabs directly.
@@ -45,11 +45,11 @@ async function updateBadge() {
     // Pick badge color based on workload level
     let color;
     if (count <= 10) {
-      color = '#3d7a4a'; // Green — you're in control
+      color = '#6cf0b4'; // Mint — you're in control
     } else if (count <= 20) {
-      color = '#b8892e'; // Amber — things are piling up
+      color = '#f0c86c'; // Gold — things are piling up
     } else {
-      color = '#b35a5a'; // Red — time to focus and close some tabs
+      color = '#f06c7c'; // Rose — time to focus and close some tabs
     }
 
     await chrome.action.setBadgeBackgroundColor({ color });
