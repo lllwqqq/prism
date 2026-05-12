@@ -334,12 +334,13 @@ async function renderQuickLinks() {
   const grid = document.getElementById('quickLinksGrid');
   if (!section || !grid) return;
 
+  section.style.display = 'block';
+
   if (links.length === 0) {
-    section.style.display = 'none';
+    grid.innerHTML = '<div class="quick-links-empty">Click + to add your favorite sites</div>';
     return;
   }
 
-  section.style.display = 'block';
   grid.innerHTML = links.map(l => renderQuickLinkCard(l)).join('');
 }
 
