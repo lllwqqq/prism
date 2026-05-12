@@ -805,6 +805,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 .deferred-list .deferred-item:nth-child(4) { animation-delay: 0.2s; }
 .deferred-list .deferred-item:nth-child(5) { animation-delay: 0.25s; }
 .deferred-column .section-header { animation: fadeUp 0.5s ease 0.1s both; }
+.quick-links-section { animation: fadeUp 0.5s ease 0.15s both; }
 
 
 /* ================================================================
@@ -1288,3 +1289,185 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 /* ================================================================
    CONFETTI — Glassmorphism particles
    ================================================================ */
+
+
+/* ================================================================
+   QUICK LINKS — User's custom favorite websites
+   ================================================================ */
+
+.quick-links-section {
+  margin-bottom: 24px;
+}
+
+.add-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  background: var(--glass-bg);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.add-link-btn:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+  background: rgba(124, 108, 240, 0.08);
+}
+
+.add-link-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.quick-links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quick-link-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  max-width: 200px;
+}
+
+.quick-link-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: rgba(255, 255, 255, 0.20);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.quick-link-favicon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.quick-link-title {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-link-remove {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: var(--status-abandoned);
+  color: white;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.quick-link-card:hover .quick-link-remove {
+  opacity: 0.8;
+}
+
+.quick-link-remove:hover {
+  opacity: 1 !important;
+}
+
+/* Add Link Dialog */
+.add-link-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.50);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.add-link-dialog-inner {
+  background: linear-gradient(160deg, #1a1a3e, #24243e);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 340px;
+  max-width: 90vw;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.add-link-dialog-inner h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.add-link-input {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.add-link-input:focus {
+  border-color: var(--accent-1);
+}
+
+.add-link-input::placeholder {
+  color: var(--muted-dim);
+}
+
+.add-link-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}

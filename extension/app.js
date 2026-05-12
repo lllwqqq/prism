@@ -285,6 +285,65 @@ async function dismissSavedTab(id) {
 
 
 /* ----------------------------------------------------------------
+   QUICK LINKS — User's custom favorite websites
+
+   Stored in chrome.storage.local under the "quickLinks" key:
+   [
+     { id: "1712345678901", title: "GitHub", url: "https://github.com" },
+     ...
+   ]
+   ---------------------------------------------------------------- */
+
+async function getQuickLinks() {
+  const { quickLinks = [] } = await chrome.storage.local.get('quickLinks');
+  return quickLinks;
+}
+
+async function saveQuickLinks(links) {
+  await chrome.storage.local.set({ quickLinks: links });
+}
+
+async function addQuickLink(title, url) {
+  const links = await getQuickLinks();
+  links.push({ id: Date.now().toString(), title, url });
+  await saveQuickLinks(links);
+}
+
+async function removeQuickLink(id) {
+  let links = await getQuickLinks();
+  links = links.filter(l => l.id !== id);
+  await saveQuickLinks(links);
+}
+
+function renderQuickLinkCard(link) {
+  let domain = '';
+  try { domain = new URL(link.url).hostname; } catch {}
+  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=32` : '';
+  const safeTitle = (link.title || link.url || '').replace(/</g, '&lt;');
+  const safeUrl = (link.url || '').replace(/"/g, '&quot;');
+  return `<a href="${safeUrl}" target="_blank" rel="noopener" class="quick-link-card" title="${safeTitle}">
+    ${faviconUrl ? `<img class="quick-link-favicon" src="${faviconUrl}" alt="" onerror="this.style.display='none'">` : ''}
+    <span class="quick-link-title">${safeTitle}</span>
+    <button class="quick-link-remove" data-action="remove-quick-link" data-link-id="${link.id}" title="Remove">\u2715</button>
+  </a>`;
+}
+
+async function renderQuickLinks() {
+  const links = await getQuickLinks();
+  const section = document.getElementById('quickLinksSection');
+  const grid = document.getElementById('quickLinksGrid');
+  if (!section || !grid) return;
+
+  if (links.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  grid.innerHTML = links.map(l => renderQuickLinkCard(l)).join('');
+}
+
+/* ----------------------------------------------------------------
    UI HELPERS
    ---------------------------------------------------------------- */
 
@@ -1180,6 +1239,9 @@ async function renderStaticDashboard() {
   // --- Check for duplicate Prism tabs ---
   checkPrismDupes();
 
+  // --- Render Quick Links ---
+  await renderQuickLinks();
+
   // --- Render "Saved for Later" column ---
   await renderDeferredColumn();
 }
@@ -1215,6 +1277,18 @@ document.addEventListener('click', async (e) => {
       setTimeout(() => { banner.style.display = 'none'; banner.style.opacity = '1'; }, 400);
     }
     showToast('Closed extra Prism tabs');
+    return;
+  }
+
+  // ---- Remove a quick link ----
+  if (action === 'remove-quick-link') {
+    e.preventDefault();
+    e.stopPropagation();
+    const linkId = actionEl.dataset.linkId;
+    if (!linkId) return;
+    await removeQuickLink(linkId);
+    await renderQuickLinks();
+    showToast('Link removed');
     return;
   }
 
@@ -1446,6 +1520,57 @@ document.addEventListener('click', async (e) => {
 
     showToast('All tabs closed. Fresh start.');
     return;
+  }
+});
+
+// ---- Quick Links: Add Link Dialog ----
+document.addEventListener('click', (e) => {
+  const addBtn = e.target.closest('#addLinkBtn');
+  const cancelBtn = e.target.closest('#cancelAddLink');
+  const confirmBtn = e.target.closest('#confirmAddLink');
+  const dialog = document.getElementById('addLinkDialog');
+  if (!dialog) return;
+
+  if (addBtn) {
+    dialog.style.display = 'flex';
+    document.getElementById('addLinkTitle').value = '';
+    document.getElementById('addLinkUrl').value = '';
+    setTimeout(() => document.getElementById('addLinkTitle').focus(), 50);
+    return;
+  }
+
+  if (cancelBtn) {
+    dialog.style.display = 'none';
+    return;
+  }
+
+  if (confirmBtn) {
+    const title = document.getElementById('addLinkTitle').value.trim();
+    const url = document.getElementById('addLinkUrl').value.trim();
+    if (!url) return;
+    const finalTitle = title || (() => { try { return new URL(url).hostname; } catch { return url; } })();
+    addQuickLink(finalTitle, url).then(() => {
+      dialog.style.display = 'none';
+      renderQuickLinks();
+      showToast('Link added');
+    });
+    return;
+  }
+});
+
+// ---- Quick Links: Enter key to confirm ----
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const dialog = document.getElementById('addLinkDialog');
+    if (dialog && dialog.style.display !== 'none') {
+      document.getElementById('confirmAddLink')?.click();
+    }
+  }
+  if (e.key === 'Escape') {
+    const dialog = document.getElementById('addLinkDialog');
+    if (dialog && dialog.style.display !== 'none') {
+      dialog.style.display = 'none';
+    }
   }
 });
 

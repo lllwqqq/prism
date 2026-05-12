@@ -30,6 +30,35 @@
   </header>
 
   <!-- ================================================================
+       QUICK LINKS — User's custom favorite websites
+       ================================================================ -->
+  <div class="quick-links-section" id="quickLinksSection" style="display:none">
+    <div class="section-header">
+      <h2>Quick links</h2>
+      <div class="section-line"></div>
+      <button class="add-link-btn" id="addLinkBtn" title="Add a link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      </button>
+    </div>
+    <div class="quick-links-grid" id="quickLinksGrid"></div>
+  </div>
+
+  <!-- ================================================================
+       ADD LINK DIALOG — modal for adding a new bookmark
+       ================================================================ -->
+  <div class="add-link-dialog" id="addLinkDialog" style="display:none">
+    <div class="add-link-dialog-inner">
+      <h3>Add a link</h3>
+      <input type="text" class="add-link-input" id="addLinkTitle" placeholder="Title (e.g. My Project)">
+      <input type="url" class="add-link-input" id="addLinkUrl" placeholder="URL (e.g. https://github.com)">
+      <div class="add-link-actions">
+        <button class="action-btn" id="cancelAddLink">Cancel</button>
+        <button class="action-btn primary" id="confirmAddLink">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
        PRISM DUPES BANNER — appears when you have extra Prism tabs open
        Hidden by default; app.js shows it when dupePrismCount > 1
        ================================================================ -->
