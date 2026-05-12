@@ -502,36 +502,31 @@ function getGreeting() {
 }
 
 /**
- * getDateDisplay() — "Friday, April 4, 2026"
+ * getDateDisplay() — "Friday, April 4, 2026 · 3:42 PM"
  */
 function getDateDisplay() {
-  return new Date().toLocaleDateString('en-US', {
+  const date = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year:    'numeric',
     month:   'long',
     day:     'numeric',
   });
-}
-
-/**
- * getFooterTime() — "3:42 PM"
- */
-function getFooterTime() {
-  return new Date().toLocaleTimeString('en-US', {
+  const time = new Date().toLocaleTimeString('en-US', {
     hour:   'numeric',
     minute: '2-digit',
   });
+  return `${date}  \u00B7  ${time}`;
 }
 
 /**
- * updateFooterClock()
+ * updateHeaderClock()
  *
- * Updates the footer time display. Called once on render
+ * Updates the date+time display in the header. Called once on render
  * and then every 30 seconds to keep it current.
  */
-function updateFooterClock() {
-  const el = document.getElementById('footerTime');
-  if (el) el.textContent = getFooterTime();
+function updateHeaderClock() {
+  const el = document.getElementById('dateDisplay');
+  if (el) el.textContent = getDateDisplay();
 }
 
 
@@ -1046,7 +1041,6 @@ async function renderStaticDashboard() {
   const dateEl     = document.getElementById('dateDisplay');
   if (greetingEl) greetingEl.textContent = getGreeting();
   if (dateEl)     dateEl.textContent     = getDateDisplay();
-  updateFooterClock();
 
   // --- Fetch tabs ---
   await fetchOpenTabs();
@@ -1543,5 +1537,5 @@ chrome.tabs.onAttached.addListener(() => scheduleRefresh());
    ---------------------------------------------------------------- */
 renderDashboard();
 
-// Update the footer clock every 30 seconds
-setInterval(updateFooterClock, 30000);
+// Update the header clock every 30 seconds
+setInterval(updateHeaderClock, 30000);

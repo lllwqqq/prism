@@ -749,16 +749,16 @@ footer {
   gap: 12px;
 }
 
-.footer-time {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 400;
-  letter-spacing: 0.5px;
+.footer-author {
+  font-size: 11px;
+  color: var(--muted-dim);
+  letter-spacing: 0.3px;
 }
 
 .footer-brand {
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 11px;
+  font-weight: 500;
   color: var(--muted-dim);
   letter-spacing: 0.5px;
 }
