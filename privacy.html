@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prism — Privacy Policy</title>
+  <style>
+    :root {
+      --bg: #0f0c29;
+      --surface: rgba(255,255,255,0.04);
+      --ink: #f0eef6;
+      --muted: rgba(255,255,255,0.55);
+      --accent: #7c6cf0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(160deg, var(--bg), #1a1a3e, #24243e);
+      background-attachment: fixed;
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      padding: 48px 24px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    h1 span {
+      color: var(--accent);
+    }
+    .updated {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 36px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    p, li {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 12px;
+    }
+    ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .highlight {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .highlight p {
+      margin-bottom: 0;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 64px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Prism <span>Privacy Policy</span></h1>
+  <div class="updated">Last updated: May 2026</div>
+
+  <div class="highlight">
+    <p><strong>TL;DR:</strong> Prism collects zero personal data. Everything stays on your device. No servers, no accounts, no tracking.</p>
+  </div>
+
+  <h2>Overview</h2>
+  <p>Prism is a Chrome extension that replaces your new tab page with a dashboard of your open tabs, grouped by domain. This privacy policy explains what data Prism accesses and how it handles that data.</p>
+
+  <h2>Data Collection</h2>
+  <p><strong>Prism does not collect, transmit, or store any personal data on external servers.</strong> The extension operates entirely within your browser. No user data is sent to the developer or any third party.</p>
+
+  <h2>Data Stored Locally</h2>
+  <p>Prism uses <code>chrome.storage.local</code> to persist user preferences on your device. This data never leaves your browser:</p>
+  <ul>
+    <li><strong>Saved tabs ("Saved for Later")</strong> — URLs and titles of tabs you choose to bookmark, along with timestamps and completion status.</li>
+    <li><strong>Quick Links</strong> — URLs and titles of custom shortcut websites you add to your dashboard.</li>
+  </ul>
+  <p>This data is stored locally on your device and is not synced, uploaded, or shared with anyone. Clearing your browser data will remove this information.</p>
+
+  <h2>Permissions</h2>
+  <p>Prism requests the following permissions, each with a specific and necessary purpose:</p>
+  <ul>
+    <li><strong>tabs</strong> — Required to read your open tab URLs and titles for grouping and display, close tabs, switch between tabs (including across windows), and monitor tab changes to auto-refresh the dashboard.</li>
+    <li><strong>activeTab</strong> — Required to identify the currently active tab when you interact with the extension, enabling features like highlighting the current tab in the dashboard.</li>
+    <li><strong>storage</strong> — Required to save your "Saved for Later" bookmarks and Quick Links to <code>chrome.storage.local</code> so they persist across browser sessions.</li>
+  </ul>
+
+  <h2>External Network Requests</h2>
+  <p>Prism makes two types of external network requests, neither of which transmits user data:</p>
+  <ul>
+    <li><strong>Google Fonts</strong> — Loads font stylesheets (Space Grotesk, DM Sans, DM Mono) for the dashboard UI. No user data is included in these requests.</li>
+    <li><strong>Google Favicon API</strong> (<code>https://www.google.com/s2/favicons</code>) — Fetches website icons for display in tab rows and Quick Links. Only the domain name is sent (e.g., <code>domain=github.com</code>). No personal identifiers or browsing history are transmitted.</li>
+  </ul>
+
+  <h2>Remote Code</h2>
+  <p><strong>Prism does not load or execute any remote code.</strong> All JavaScript and CSS are bundled within the extension package. The only external resources loaded are font stylesheets (CSS, not executable code) and favicon images (PNG, not executable code).</p>
+
+  <h2>Third-Party Services</h2>
+  <p>Prism does not integrate with any third-party analytics, advertising, or tracking services. There are no SDKs for Google Analytics, Mixpanel, Facebook Pixel, or similar tools.</p>
+
+  <h2>Data Sharing</h2>
+  <p><strong>Prism does not share any data with anyone.</strong> There is no server backend, no database, no API. All data remains on your device.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Prism does not knowingly collect data from anyone, including children under 13. Since no data is collected at all, the extension is safe for users of all ages.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>If this privacy policy is updated in the future, the revised version will be posted on this page with an updated "Last updated" date.</p>
+
+  <h2>Contact</h2>
+  <p>If you have questions about this privacy policy or the Prism extension, please contact:</p>
+  <p><strong>Email:</strong> <a href="mailto:lee@prism-extension.com">lee@prism-extension.com</a></p>
+
+  <footer>
+    Prism Chrome Extension &middot; by Lee &middot; &copy; 2026
+  </footer>
+
+</div>
+</body>
+</html>
